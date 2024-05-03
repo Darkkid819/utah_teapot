@@ -17,6 +17,10 @@ int main() {
     Model teapot = LoadModel("./teapot.obj");  
     SetModelMeshMaterial(&teapot, 0, 0);
 
+    Shader shader = LoadShader(0, "./bloom.fs");
+
+    RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
+
     Vector3 tableTopSize = { 4.0f, 0.2f, 4.0f };
     Vector3 tableTopPosition = { 0.0f, 0.1f, 0.0f };
     float legHeight = 2.0f;
@@ -41,8 +45,9 @@ int main() {
 
         camera.target = (Vector3){ 0.0f, 1.0f, 0.0f };
 
-        BeginDrawing();
+        BeginTextureMode(target);
             ClearBackground(BLACK);
+
             BeginMode3D(camera);
                 DrawCube(tableTopPosition, tableTopSize.x, tableTopSize.y, tableTopSize.z, BROWN);
                 DrawCube((Vector3){ -1.8f, -1.0f, 1.8f }, legSize.x, legSize.y, legSize.z, BROWN);
@@ -52,11 +57,22 @@ int main() {
 
                 DrawModel(teapot, (Vector3){ 0.0f, tableTopPosition.y + tableTopSize.y/2 , 0.0f }, 0.5f, WHITE);
             EndMode3D();
+        EndTextureMode();
+
+        BeginDrawing();
+            ClearBackground(BLACK);
+
+            BeginShaderMode(shader);
+                DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);            
+            EndShaderMode();
+
             DrawFPS(10, 10);
         EndDrawing();
     }
 
+    UnloadShader(shader);
     UnloadModel(teapot);
+    UnloadRenderTexture(target);
 
     CloseWindow();
 

@@ -50,7 +50,7 @@ int main() {
                 DrawCube((Vector3){ -1.8f, -1.0f, -1.8f }, legSize.x, legSize.y, legSize.z, BROWN);
                 DrawCube((Vector3){ 1.8f, -1.0f, -1.8f }, legSize.x, legSize.y, legSize.z, BROWN);
 
-                DrawModel(teapot, (Vector3){ 0.0f, tableTopPosition.y + tableTopSize.y/2 + 0.5f, 0.0f }, 0.5f, WHITE);
+                DrawModel(teapot, (Vector3){ 0.0f, tableTopPosition.y + tableTopSize.y/2 , 0.0f }, 0.5f, WHITE);
             EndMode3D();
             DrawFPS(10, 10);
         EndDrawing();
